@@ -41,11 +41,14 @@ export function getInterview (state, interview) {
     return interviewObject; 
   }
 
-  export function getInterviewersForDay(state, day) {
+export function getInterviewersForDay(state, day) {
   const filteredDay = state.days.filter(d => d.name === day)
   let interviewers = [];
-  if (filteredDay.length === 0) return interviewers;
-  for (const id of filteredDay[0].interviewers) {
+  if (filteredDay.length === 0) {
+    return interviewers
+};
+console.log(filteredDay);
+  for (const id of filteredDay[0].appointments) {
     interviewers.push(state.interviewers[id]);
   }
   return interviewers;
