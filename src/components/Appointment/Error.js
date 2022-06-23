@@ -1,4 +1,5 @@
 import React from "react";
+// Render the empty component when appointment isnt booked 
 export default function Error(props) {
   return (
     <main className="appointment__card appointment__card--error">

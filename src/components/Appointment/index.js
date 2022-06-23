@@ -9,6 +9,7 @@ import useVisualMode from "hooks/useVisualMode";
 import Status from "./Status";
 import Confirm from "./Confirm";
 
+// Render the entire appointment section 
 export default function Appointment(props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
@@ -18,7 +19,8 @@ export default function Appointment(props) {
   const EDIT = "EDIT";
   const ERROR_DELETE = "ERROR_DELETE";
   const ERROR_SAVE = "ERROR_SAVE";
-
+  
+  //When save is clicked, the function will save the appointment to the db
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -27,10 +29,10 @@ export default function Appointment(props) {
     transition(SAVING);
     props
       .bookInterview(props.id, interview)
-      .then(() =>  transition(SHOW))
-      .catch(error=> transition(ERROR_SAVE, true));
+      .then(() => transition(SHOW))
+      .catch((error) => transition(ERROR_SAVE, true));
   }
-
+  //When cancelAppointment is clicked, the function will cancel the appointment in the db
   function cancelAppointment(id) {
     transition(SAVING, true);
     props
@@ -40,8 +42,7 @@ export default function Appointment(props) {
       })
       .catch((err) => transition(ERROR_DELETE, true));
   }
-
-
+//hooks to change mode 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -106,12 +107,8 @@ export default function Appointment(props) {
       )}
 
       {mode === ERROR_SAVE && (
-        <Error
-          message={`Could not save appointment`}
-          onClose={() => back()}
-        />
+        <Error message={`Could not save appointment`} onClose={() => back()} />
       )}
-
     </article>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "components/Button";
 import InterviewerList from "components/InterviewerList";
 
+// Render the Form component when book appointment button is clicked on 
 export default function Form(props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
@@ -11,23 +12,17 @@ export default function Form(props) {
     setStudent("");
     setInterviewer(null);
   }
-
+  // resets and cancels when cancel is clicked
   function cancel() {
     reset();
     props.onCancel();
   }
-
-
+  // Validates that students name has to be filled
   function validate() {
     if (student === "") {
       setError("Student name cannot be blank");
       return;
     }
-    
-    // if (interviewer === null) {
-    //   setError("Please select an interviewer");
-    //   return;
-    // }
 
     setError("");
     props.onSave(student, interviewer);
@@ -48,7 +43,9 @@ export default function Form(props) {
             value={student}
             data-testid="student-name-input"
             placeholder="Enter Student Name"
-            onChange={(e) => {setStudent(e.target.value) }}
+            onChange={(e) => {
+              setStudent(e.target.value);
+            }}
           />
           <section className="appointment__validation">{error}</section>
         </form>
@@ -63,10 +60,7 @@ export default function Form(props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button
-            confirm
-            onClick={validate}
-          >
+          <Button confirm onClick={validate}>
             Save
           </Button>
         </section>

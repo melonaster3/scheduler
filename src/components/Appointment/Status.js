@@ -1,7 +1,6 @@
 import React from "react";
-
+// Render status component, which consists the status of the appointment
 export default function Status(props) {
-  console.log("This is inside the status");
   return (
     <main className="appointment__card appointment__card--status">
       <img
