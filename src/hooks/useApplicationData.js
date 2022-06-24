@@ -2,12 +2,34 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 // This is where all the application data is stored for the application render 
 export default function useApplicationData() {
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {},
   });
+
+// This is to get all the data from our 8001 api server. 
+  useEffect(() => {
+    const daysURL = "/api/days";
+    const appointmentURL = "/api/appointments";
+    const interviewersURL = "/api/interviewers";
+
+    Promise.all([
+      axios.get(daysURL),
+      axios.get(appointmentURL),
+      axios.get(interviewersURL),
+    ]).then((ans) => {
+      setState({
+        ...state,
+        days: ans[0].data,
+        appointments: ans[1].data,
+        interviewers: ans[2].data,
+      });
+    });
+  }, []);// eslint-disable-next-line
+
 
   // Called when a user books the interview. It will save on online db using axios
   function bookInterview(id, interview) {
@@ -65,26 +87,6 @@ export default function useApplicationData() {
     });
     return newDays;
   }
-
-  // This is to get all the data from our 8001 api server. 
-  useEffect(() => {
-    const daysURL = "http://localhost:8001/api/days";
-    const appointmentURL = "http://localhost:8001/api/appointments";
-    const interviewersURL = "http://localhost:8001/api/interviewers";
-
-    Promise.all([
-      axios.get(daysURL),
-      axios.get(appointmentURL),
-      axios.get(interviewersURL),
-    ]).then((ans) => {
-      setState({
-        ...state,
-        days: ans[0].data,
-        appointments: ans[1].data,
-        interviewers: ans[2].data,
-      });
-    });
-  }, []);
 
   const setDay = (day) => setState({ ...state, day });
 
