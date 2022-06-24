@@ -4,27 +4,29 @@ import { useState } from "react";
 export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
-  const newHistory = [...history].pop();
+
   //Transition will move the value to the mode (used for Appointments )
   function transition(value, replace = false) {
+    let newHistory = [...history];
     if (replace === true) {
+      newHistory.pop();
+      newHistory.push(value);
       setHistory(newHistory);
-      history.push(value);
-      setHistory(history);
       setMode(value);
     } else {
       setMode(value);
-      history.push(value);
-      setHistory(history);
+      newHistory.push(value);
+      setHistory(newHistory);
     }
   }
 
   // Back will make the mode to delete history and go back to the mode before (used for Appointments )
   function back() { 
+    let newHistory = [...history];
     if (mode !== initial) {
+      newHistory.pop();
       setHistory(newHistory);
-      setHistory(history);
-      let length = history.length - 1;
+      let length = newHistory.length - 1;
       setMode(history[length]);
     }
   }
