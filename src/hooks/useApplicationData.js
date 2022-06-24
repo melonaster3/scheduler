@@ -76,6 +76,30 @@ export default function useApplicationData() {
     });
   }
 
+   // Called when a user edits the interview. It will save on online db using axios
+   function editInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios
+      .put(`/api/appointments/${id}`, { interview: interview })
+      .then((res) => {
+        const days = notUpdateSpots(id, state);
+        setState({
+          ...state,
+          days,
+          appointments,
+        });
+      });
+  }
+
 // Called when a user cancels OR books an interview. It will update how many spots are reamining for interview on the day. 
   function updateSpots(id, state, isPlus) {
     const newDays = state.days.map((day) => {
@@ -88,7 +112,19 @@ export default function useApplicationData() {
     return newDays;
   }
 
+  // Called when a user cedits interview. It will NOT update how many spots are reamining for interview on the day. 
+  function notUpdateSpots(id, state) {
+    const newDays = state.days.map((day) => {
+      if (day.appointments.includes(id)) {
+        return { ...day };
+      }
+      return day;
+    });
+    return newDays;
+  }
+
+
   const setDay = (day) => setState({ ...state, day });
 
-  return { state, setDay, bookInterview, cancelInterview };
+  return { state, setDay, bookInterview, cancelInterview, editInterview };
 }

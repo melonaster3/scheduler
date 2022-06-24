@@ -13,7 +13,7 @@ import {
 // Render entire application 
 export default function Application(props) {
   // hook to set the day
-  const { state, setDay, bookInterview, cancelInterview } =
+  const { state, setDay, bookInterview, cancelInterview, editInterview } =
     useApplicationData();
 
   const appointments = getAppointmentsForDay(state, state.day);
@@ -31,6 +31,7 @@ export default function Application(props) {
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
+        editInterview={editInterview}
       />
     );
   });

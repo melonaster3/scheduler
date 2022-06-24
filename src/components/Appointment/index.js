@@ -42,6 +42,18 @@ export default function Appointment(props) {
       })
       .catch((err) => transition(ERROR_DELETE, true));
   }
+   //When edit is clicked, the function will edit the appointment to the db
+   function edit(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer,
+    };
+    transition(SAVING);
+    props
+      .editInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch((error) => transition(ERROR_SAVE, true));
+  }
 //hooks to change mode 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -86,7 +98,7 @@ export default function Appointment(props) {
           }
           interviewers={props.interviewers}
           onCancel={back}
-          onSave={save}
+          onSave={edit}
         />
       )}
 
