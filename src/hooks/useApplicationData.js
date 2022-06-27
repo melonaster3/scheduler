@@ -28,7 +28,8 @@ export default function useApplicationData() {
         interviewers: ans[2].data,
       });
     });
-  }, []);// eslint-disable-next-line
+    // eslint-disable-next-line
+  }, []);
 
 
   // Called when a user books the interview. It will save on online db using axios

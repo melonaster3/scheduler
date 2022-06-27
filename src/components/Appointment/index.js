@@ -9,7 +9,7 @@ import useVisualMode from "hooks/useVisualMode";
 import Status from "./Status";
 import Confirm from "./Confirm";
 
-// Render the entire appointment section 
+// Render the entire appointment section
 export default function Appointment(props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
@@ -19,7 +19,8 @@ export default function Appointment(props) {
   const EDIT = "EDIT";
   const ERROR_DELETE = "ERROR_DELETE";
   const ERROR_SAVE = "ERROR_SAVE";
-  
+  const ERROR_SAVEEDIT = "ERROR_SAVEEDIT";
+
   //When save is clicked, the function will save the appointment to the db
   function save(name, interviewer) {
     const interview = {
@@ -42,8 +43,8 @@ export default function Appointment(props) {
       })
       .catch((err) => transition(ERROR_DELETE, true));
   }
-   //When edit is clicked, the function will edit the appointment to the db
-   function edit(name, interviewer) {
+  //When edit is clicked, the function will edit the appointment to the db
+  function edit(name, interviewer) {
     const interview = {
       student: name,
       interviewer,
@@ -52,9 +53,9 @@ export default function Appointment(props) {
     props
       .editInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch((error) => transition(ERROR_SAVE, true));
+      .catch((error) => transition(ERROR_SAVEEDIT, true));
   }
-//hooks to change mode 
+  //hooks to change mode
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -82,11 +83,7 @@ export default function Appointment(props) {
         />
       )}
       {mode === CREATE && (
-        <Form
-          interviewers={props.interviewers}
-          onCancel={back}
-          onSave={save}
-        />
+        <Form interviewers={props.interviewers} onCancel={back} onSave={save} />
       )}
       {mode === SAVING && <Status message={"Saving"} />}
 
@@ -112,14 +109,19 @@ export default function Appointment(props) {
       )}
 
       {mode === ERROR_DELETE && (
-        <Error
-          message={`Could not cancel appointment`}
-          onClose={back}
-        />
+        <Error message={`Could not cancel appointment`} onClose={back} />
       )}
 
       {mode === ERROR_SAVE && (
-        <Error message={`Could not save appointment`} onClose={back} />
+        <Error message={`Could not save appointment`} onClose={() => {
+          transition(CREATE);
+        }} />
+      )}
+
+      {mode === ERROR_SAVEEDIT && (
+        <Error message={`Could not save appointment`} onClose={() => {
+          transition(EDIT);
+        }} />
       )}
     </article>
   );
