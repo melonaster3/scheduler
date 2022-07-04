@@ -33,7 +33,7 @@ Left panel has a locked side bar where users can click on the days to navigate t
 
 ![Appointment Form](https://github.com/melonaster3/scheduler/blob/master/docs/appointment-form.PNG?raw=true)
 
-## Appointmen form 
+## Appointment form 
 
 Users can input the name and choose from an interviewer avaliable. As shown, the chosen interviewer will be highlighted with their full name being shown. When user cancels, it will be taken back to the list page, when user clicks save the appointment will be saved and shown right away on the list. 
 
